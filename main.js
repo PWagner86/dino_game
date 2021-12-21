@@ -1,4 +1,7 @@
 import * as THREE from 'https://cdn.skypack.dev/three@latest';
+import { OBJLoader } from 'https://cdn.skypack.dev/three@latest/examples/jsm/loaders/OBJLoader.js';
+
+import { Dino } from './src/dino.js';
 
 
 class World {
@@ -16,16 +19,21 @@ class World {
             this._near,
             this._far,
         );
+        this._camera.position.set( 0, 0, 5 );
 
         this._renderer = new THREE.WebGLRenderer();
         this._renderer.setSize( window.innerWidth, window.innerHeight );
         document.body.append( this._renderer.domElement );
 
+        this._OBJLoader = new OBJLoader();
+
+        this._dino = new Dino( { scene: this._scene, loader: this._OBJLoader } );
+
         this._animate();
 
         window.addEventListener('resize', () => {
             this._onWindowResize();
-        })
+        });
     };
 
     _onWindowResize() {
@@ -36,9 +44,10 @@ class World {
 
     _animate() {
         const animate = () => {
-            requestAnimationFrame( this );
+            requestAnimationFrame( animate );
             this._renderer.render( this._scene, this._camera )
         };
+        animate();
     };
 
 };
