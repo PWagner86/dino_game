@@ -27,12 +27,12 @@ class World {
         this._renderer.shadowMap.type = THREE.PCDSoftShadowMap;
         this._renderer.setSize( window.innerWidth, window.innerHeight );
 
-        this._orbitControls = new OrbitControls( this._camera, this._renderer.domElement );
-        this._orbitControls.update();
-
         document.body.append( this._renderer.domElement );
 
-        this._camera.position.set( 0, 2, 5 );
+        this._camera.position.set( 0, 3, 10 );
+
+        this._orbitControls = new OrbitControls( this._camera, this._renderer.domElement );
+        this._orbitControls.update();
 
 
         this._dirLight = new THREE.DirectionalLight( 0xffffff, 1, 1000 );
