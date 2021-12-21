@@ -1,4 +1,5 @@
 import * as THREE from 'https://cdn.skypack.dev/three@latest';
+import { OrbitControls } from 'https://cdn.skypack.dev/three@latest/examples/jsm/controls/OrbitControls.js';
 
 import { Dino } from './src/dino.js';
 
@@ -18,11 +19,17 @@ class World {
             this._near,
             this._far,
         );
-        this._camera.position.set( 1, 2, 5 );
 
         this._renderer = new THREE.WebGLRenderer();
         this._renderer.setSize( window.innerWidth, window.innerHeight );
+
+        // this._orbitControls = new OrbitControls( this._camera, this._renderer.domElement );
+        // this._orbitControls.update();
+
         document.body.append( this._renderer.domElement );
+
+        this._camera.position.set( 0, 2, 5 );
+
 
         this._dirLight = new THREE.DirectionalLight( 0xffffff, 1 );
         this._ambientLight = new THREE.AmbientLight( 0x404040 );
@@ -45,13 +52,20 @@ class World {
     };
 
     _animate() {
-        const animate = () => {
-            requestAnimationFrame( animate );
-            this._renderer.render( this._scene, this._camera )
-        };
-        animate();
-    };
 
+        requestAnimationFrame( ( t ) => {
+            if( this._previousAnimation === null){
+                this._previousAnimation = t;
+            };
+
+            this._animate();
+
+            this._dino._update((t - this._previousAnimation) / 1000.0)
+            this._renderer.render( this._scene, this._camera );
+            this._previousAnimation = t;
+
+        });
+    };
 };
 
 let APP = null;
