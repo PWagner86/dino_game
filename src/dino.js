@@ -35,7 +35,23 @@ export class Dino {
                         const action = this._mixer.clipAction( clip );
                         action.play();
                     };
-                })
+                });
+
+                fbx.traverse( ( d ) => {
+                    let materials = d.material;
+                    if( !( d.material instanceof Array ) ){
+                        materials = [d.material];
+                    }
+
+                    for( let m of materials ){
+                        if( m ){
+                            m.specular = new THREE.Color( 0x000000 );
+                            m.color.offsetHSL( 0, 0, 0.25 );
+                        }
+                    }
+                    d.castShadow = true;
+                    d.receiveShadow = true;
+                });
             },
 
             ( xhr ) => {
