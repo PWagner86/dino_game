@@ -1,5 +1,4 @@
 import * as THREE from 'https://cdn.skypack.dev/three@latest';
-import { OBJLoader } from 'https://cdn.skypack.dev/three@latest/examples/jsm/loaders/OBJLoader.js';
 
 import { Dino } from './src/dino.js';
 
@@ -19,15 +18,18 @@ class World {
             this._near,
             this._far,
         );
-        this._camera.position.set( 0, 0, 5 );
+        this._camera.position.set( 1, 2, 5 );
 
         this._renderer = new THREE.WebGLRenderer();
         this._renderer.setSize( window.innerWidth, window.innerHeight );
         document.body.append( this._renderer.domElement );
 
-        this._OBJLoader = new OBJLoader();
+        this._dirLight = new THREE.DirectionalLight( 0xffffff, 1 );
+        this._ambientLight = new THREE.AmbientLight( 0x404040 );
 
-        this._dino = new Dino( { scene: this._scene, loader: this._OBJLoader } );
+        this._dino = new Dino( { scene: this._scene } );
+
+        this._scene.add( this._dirLight, this._ambientLight );
 
         this._animate();
 
