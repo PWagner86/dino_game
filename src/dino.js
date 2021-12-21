@@ -29,13 +29,13 @@ export class Dino {
                 const m = new THREE.AnimationMixer( fbx );
                 this._mixer = m;
 
-                for( let i = 0; i < fbx.animations.length; i++ ){
-                    if( fbx.animations[i].name.includes('Walk') ){
-                        const clip = fbx.animations[i];
+                fbx.animations.forEach( ( move ) => {
+                    if( move.name.includes('Walk') ){
+                        const clip = move;
                         const action = this._mixer.clipAction( clip );
                         action.play();
                     };
-                };
+                })
             },
 
             ( xhr ) => {
