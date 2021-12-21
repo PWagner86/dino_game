@@ -1,5 +1,5 @@
 import * as THREE from 'https://cdn.skypack.dev/three@latest';
-import { OrbitControls } from 'https://cdn.skypack.dev/three@latest/examples/jsm/controls/OrbitControls.js';
+// import { OrbitControls } from 'https://cdn.skypack.dev/three@latest/examples/jsm/controls/OrbitControls.js';
 
 import { Dino } from './src/dino.js';
 
@@ -59,7 +59,6 @@ class World {
             };
 
             this._animate();
-
             this._dino._update((t - this._previousAnimation) / 1000.0)
             this._renderer.render( this._scene, this._camera );
             this._previousAnimation = t;
