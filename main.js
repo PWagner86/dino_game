@@ -9,6 +9,8 @@ import { Sky } from './src/sky.js';
 class World {
     constructor(){
 
+        this._move = false;
+
         this._fov = 75;
         this._aspect = window.innerWidth / window.innerHeight;
         this._near = 0.1;
@@ -31,8 +33,8 @@ class World {
 
         this._camera.position.set( 0, 3, 10 );
 
-        this._orbitControls = new OrbitControls( this._camera, this._renderer.domElement );
-        this._orbitControls.update();
+        // this._orbitControls = new OrbitControls( this._camera, this._renderer.domElement );
+        // this._orbitControls.update();
 
 
         this._dirLight = new THREE.DirectionalLight( 0xffffff, 1, 1000 );
@@ -50,6 +52,8 @@ class World {
         window.addEventListener('resize', () => {
             this._onWindowResize();
         });
+
+        this._toggleMove();
     };
 
     _onWindowResize() {
@@ -61,16 +65,36 @@ class World {
     _animate() {
 
         requestAnimationFrame( ( t ) => {
+
             if( this._previousAnimation === null){
                 this._previousAnimation = t;
             };
 
             this._animate();
-            this._orbitControls;
-            this._dino._update((t - this._previousAnimation) / 1000.0);
+            // this._orbitControls;
+            if( this._move === true ){
+                this._dino._update((t - this._previousAnimation) / 1000.0);
+            }
             this._renderer.render( this._scene, this._camera );
             this._previousAnimation = t;
 
+        });
+    };
+
+    _toggleMove() {
+        document.addEventListener('keydown', ( e ) => {
+            switch( e.key ){
+                case "w":
+                    this._move = true;
+                    break;
+            };
+        });
+        document.addEventListener('keyup', ( e ) => {
+            switch( e.key ){
+                case "w":
+                    this._move = false;
+                    break;
+            };
         });
     };
 };
@@ -79,4 +103,4 @@ let APP = null;
 
 window.addEventListener('DOMContentLoaded', () => {
     APP = new World();
-})
+});

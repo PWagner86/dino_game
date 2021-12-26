@@ -64,9 +64,9 @@ export class Dino {
         );
     };
 
-    _update( timeElapsed ){
+    _update( timeElapsed ) {
 
-        if( this._mesh ){
+        if( this._mesh ) {
             this._mixer.update( timeElapsed );
         };
     };
