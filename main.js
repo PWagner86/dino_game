@@ -8,9 +8,7 @@ import { Sky } from './src/sky.js';
 
 class World {
     constructor(){
-
-        this._move = false;
-
+            
         this._fov = 75;
         this._aspect = window.innerWidth / window.innerHeight;
         this._near = 0.1;
@@ -38,10 +36,14 @@ class World {
 
 
         this._dirLight = new THREE.DirectionalLight( 0xffffff, 1, 1000 );
-        this._dirLight.position.set( 10, 20, -5);
+        this._dirLight.position.set( 10, 20, 10);
         this._dirLight.castShadow = true;
 
+        this._pics = document.querySelectorAll('li');
+
         this._dino = new Dino( { scene: this._scene } );
+        
+
         this._ground = new Ground( { scene: this._scene } );
         this._sky = new Sky( { scene: this._scene });
 
@@ -51,9 +53,7 @@ class World {
 
         window.addEventListener('resize', () => {
             this._onWindowResize();
-        });
-
-        this._toggleMove();
+        }, false);
     };
 
     _onWindowResize() {
@@ -72,29 +72,13 @@ class World {
 
             this._animate();
             // this._orbitControls;
-            if( this._move === true ){
+            if( this._dino._state.walking || this._dino._state.jumping ){
                 this._dino._update((t - this._previousAnimation) / 1000.0);
             }
+
             this._renderer.render( this._scene, this._camera );
             this._previousAnimation = t;
 
-        });
-    };
-
-    _toggleMove() {
-        document.addEventListener('keydown', ( e ) => {
-            switch( e.key ){
-                case "w":
-                    this._move = true;
-                    break;
-            };
-        });
-        document.addEventListener('keyup', ( e ) => {
-            switch( e.key ){
-                case "w":
-                    this._move = false;
-                    break;
-            };
         });
     };
 };

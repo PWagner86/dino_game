@@ -8,4 +8,62 @@ body{
     width: 100vw;
     height: 100vh;
     overflow: hidden;
+    position: relative;
+}
+
+ul{
+    position: absolute;
+    width: 100%;
+    height: 20vh;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+}
+
+.dino{
+    width: 15vmin;
+    height: 15vmin;
+    list-style: none;
+    border-radius: 50%;
+    /* background: black; */
+    background-size: cover;
+    background-position: center center;
+    background-repeat: no-repeat;
+    cursor: pointer;
+}
+
+#apatosaurus{
+    background-image: url(./src/dino_pics/apatosaurus.jpg);
+}
+
+#parasaurolophus{
+    background-image: url(./src/dino_pics/parasaurolophus.jpg);
+}
+
+#stegosaurus{
+    background-image: url(./src/dino_pics/stegosaurus.jpg);
+}
+
+#trex{
+    background-image: url(./src/dino_pics/tyrannosaurus.jpg);
+}
+
+#triceratops{
+    background-image: url(./src/dino_pics/triceratops.jpg);
+}
+
+#raptor{
+    background-image: url(./src/dino_pics/velociraptor.jpg);
+}
+
+.load{
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    width: 20vmin;
+    height: 20vmin;
+    background: red;
+    border-radius: 50%;
+    /* display: none; */
 }

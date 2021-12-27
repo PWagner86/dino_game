@@ -9,8 +9,51 @@ export class Dino {
 
         this._params = params;
 
-        this._getDino();
+        this._state = {
+            walking: false,
+            jumping: false
+        }
 
+        this._load = document.querySelector('.load');
+        console.log(this._load)
+
+        this._species = null;
+
+        this._pics = document.querySelectorAll('li');  
+        
+        this._pics.forEach( pic => {
+            const children = this._params.scene.children
+            pic.addEventListener('click', () => {
+                if( children.length > 2) children.splice( children.length - 1, 1);
+                switch( pic.id ){
+                    case 'apatosaurus':
+                        this._species = 'Apatosaurus';
+                        this._getDino();
+                        break;
+                    case 'parasaurolophus':
+                        this._species = 'Parasaurolophus';
+                        this._getDino();
+                        console.log(this._params.scene);
+                        break;
+                    case 'stegosaurus':
+                        this._species = 'Stegosaurus';
+                        this._getDino();
+                        break;
+                    case 'trex':
+                        this._species = 'Trex';
+                        this._getDino();
+                        break;
+                    case 'triceratops':
+                        this._species = 'Triceratops';
+                        this._getDino();
+                        break;
+                    case 'raptor':
+                        this._species = 'Velociraptor';
+                        this._getDino();
+                        break;
+                };
+            });
+        });
     };
 
     _getDino(){
@@ -18,9 +61,9 @@ export class Dino {
         const loader = new FBXLoader();
     
         loader.load(
-            './src/dinos/FBX/Trex.fbx',
+            `./src/dinos/FBX/${ this._species }.fbx`,
             ( fbx ) => {
-                // console.log( fbx );
+                fbx.name = this._species;
                 fbx.scale.setScalar( 0.0025 );
                 fbx.rotation.y = Math.PI / 2;
                 this._mesh = fbx;
@@ -29,18 +72,41 @@ export class Dino {
                 const m = new THREE.AnimationMixer( fbx );
                 this._mixer = m;
 
-                fbx.animations.forEach( ( move ) => {
-                    if( move.name.includes('Walk') ){
-                        const clip = move;
-                        const action = this._mixer.clipAction( clip );
-                        action.play();
-                    };
-                });
+//                 document.addEventListener('keydown', ( e ) => {
+//                     switch( e.key ){
+//                         case "w":
+//                             this._walk( fbx );
+//                             break;
+//                     };
+//                 });
+
+//                 document.addEventListener('keypress', ( e ) => {
+//                     switch( e.key ){
+//                         case " ":
+//                             this._jump( fbx );
+//                             setTimeout( () => {
+//                                 this._state.jumping = false;
+//                                 this._mixer.stopAllAction();
+//                             }, fbx.animations[0].duration * 1000 );
+//                             break;
+//                     };
+//                 });
+
+//                 document.addEventListener('keyup', ( e ) => {
+//                     switch( e.key ){
+//                         case "w":
+//                             this._state.walking = false;
+//                             this._mixer.stopAllAction();
+//                             break;
+//                     }
+//                 });
+// ;
 
                 fbx.traverse( ( d ) => {
                     let materials = d.material;
                     if( !( d.material instanceof Array ) ){
                         materials = [d.material];
+
                     }
 
                     for( let m of materials ){
@@ -55,7 +121,10 @@ export class Dino {
             },
 
             ( xhr ) => {
-                console.log ( `${ Math.floor( xhr.loaded / xhr.total * 100 ) }%` );
+                
+                const time = Math.floor( xhr.loaded / xhr.total * 100 );
+                console.log ( time + '%' );
+                
             },
 
             ( error ) => {
@@ -68,6 +137,38 @@ export class Dino {
 
         if( this._mesh ) {
             this._mixer.update( timeElapsed );
+        };
+    };
+
+    _walk( fbx ){
+        for( let s in this._state ){
+            s = false;
+        };  
+        this._state.walking = true;
+        if( this._state.walking ){  
+            fbx.animations.forEach( ( move ) => {
+                if( move.name.includes( 'Walk' ) ){
+                    const clip = move;
+                    const action = this._mixer.clipAction( clip );
+                    action.play();
+                };
+            });
+        };
+    };
+
+    _jump( fbx ){
+        for( let s in this._state ){
+            s = false;
+        };  
+        this._state.jumping = true;
+        if( this._state.jumping ){
+            fbx.animations.forEach( ( move ) => {
+                if( move.name.includes( 'Jump' ) ){
+                    const clip = move;
+                    const action = this._mixer.clipAction( clip );
+                    action.play();
+                };
+            });
         };
     };
 };
