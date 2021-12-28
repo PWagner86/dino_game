@@ -1,9 +1,11 @@
 import * as THREE from 'https://cdn.skypack.dev/three@latest';
 import { OrbitControls } from 'https://cdn.skypack.dev/three@latest/examples/jsm/controls/OrbitControls.js';
 
-import { Dino } from './src/dino.js';
-import { Ground } from './src/ground.js';
 import { Sky } from './src/sky.js';
+import { Ground } from './src/ground.js';
+import { Natur } from './src/natur.js';
+import { Dino } from './src/dino.js';
+
 
 
 class World {
@@ -31,23 +33,27 @@ class World {
 
         this._camera.position.set( 0, 3, 10 );
 
-        // this._orbitControls = new OrbitControls( this._camera, this._renderer.domElement );
-        // this._orbitControls.update();
+        this._orbitControls = new OrbitControls( this._camera, this._renderer.domElement );
+        this._orbitControls.maxPolarAngle = 1.5;
+        this._orbitControls.enablePan = false;
+        this._orbitControls.update();
 
-
-        this._dirLight = new THREE.DirectionalLight( 0xffffff, 1, 1000 );
-        this._dirLight.position.set( 10, 20, 10);
+        this._dirLight = new THREE.DirectionalLight( 0xffffff, 1, 10000 );
+        this._dirLight.position.set( 0, 50, 0 );
         this._dirLight.castShadow = true;
+
+        this._pointLight = new THREE.PointLight( 0x363636, 5, 1000 );
+        this._pointLight.position.set( 0, 200, 0 );
+
+        this._scene.add( this._dirLight, this._pointLight );
 
         this._pics = document.querySelectorAll('li');
 
-        this._dino = new Dino( { scene: this._scene } );
-        
-
         this._ground = new Ground( { scene: this._scene } );
         this._sky = new Sky( { scene: this._scene });
+        this._natur = new Natur( { scene: this._scene });
+        this._dino = new Dino( { scene: this._scene } );
 
-        this._scene.add( this._dirLight );
 
         this._animate();
 
@@ -71,10 +77,25 @@ class World {
             };
 
             this._animate();
-            // this._orbitControls;
-            if( this._dino._state.walking || this._dino._state.jumping ){
-                this._dino._update((t - this._previousAnimation) / 1000.0);
-            }
+            this._orbitControls;
+
+            if( this._dino._isLoaded ){
+                this._natur._meshPack.forEach( m => {
+                    m.position.x -= 0.05;
+                    if( m.position.x < -640 ){
+                        m.position.x = 640;
+                    }
+                });
+                this._sky._cloudObjects.forEach( c => {
+                    c.position.x -= 0.05;
+                    if( c.position.x < -600 ){
+                        c.position.x = 600;
+                    }
+                })
+            };
+
+            this._dino._update((t - this._previousAnimation) / 1000.0);
+
 
             this._renderer.render( this._scene, this._camera );
             this._previousAnimation = t;
