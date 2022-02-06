@@ -1,5 +1,4 @@
-import * as THREE from 'https://cdn.skypack.dev/three@latest';
-import { FBXLoader } from 'https://cdn.skypack.dev/three@latest/examples/jsm/loaders/FBXLoader.js';
+import { FBXLoader } from 'https://cdn.skypack.dev/three@0.136/examples/jsm/loaders/FBXLoader.js';
 
 export class Natur {
 

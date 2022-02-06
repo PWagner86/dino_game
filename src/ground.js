@@ -1,4 +1,4 @@
-import * as THREE from 'https://cdn.skypack.dev/three@latest';
+import * as THREE from 'https://cdn.skypack.dev/three@0.136';
 
 export class Ground {
     constructor( params ){
